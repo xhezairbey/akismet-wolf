@@ -12,16 +12,16 @@
 class AkismetController extends PluginController {
 
   private static function _checkPermission() {
-		AuthUser::load();
-		if ( !AuthUser::isLoggedIn() ) {
-			redirect(get_url('login'));
-	  }
+    AuthUser::load();
+    if ( !AuthUser::isLoggedIn() ) {
+      redirect(get_url('login'));
+    }
   }
 
   function __construct() {
-		self::_checkPermission();
-		$this->setLayout('backend');
-		$this->assignToLayout('sidebar', new View('../../plugins/akismet/views/sidebar'));
+    self::_checkPermission();
+    $this->setLayout('backend');
+    $this->assignToLayout('sidebar', new View('../../plugins/akismet/views/sidebar'));
   }
 
   /*
@@ -29,14 +29,14 @@ class AkismetController extends PluginController {
   * @return message on boolean value.
   */
   function verifyKey() {
-		$akismet = new Akismet(akismet_get_blog(), $settings['akismet_api_key']);
-		if($akismet->isKeyValid()) {
-		  // api key is okay
-		  echo "Valid Key!";
-		} else {
-		  // api key is invalid
-		  echo "Invalid Key!";
-		}
+    $akismet = new Akismet(akismet_get_blog(), $settings['akismet_api_key']);
+    if($akismet->isKeyValid()) {
+      // api key is okay
+      echo "Valid Key!";
+    } else {
+      // api key is invalid
+      echo "Invalid Key!";
+    }
   }
 
   /*
@@ -44,10 +44,10 @@ class AkismetController extends PluginController {
   * If True set comment is_spam and is_approved values.
   */
   function spamCheck(&$comment) {
-		if (is_null($comment)) return;
+    if (is_null($comment)) return;
 
-		(int)$cpid = $comment->page_id;
-		$pid = Page::linkById($cpid);
+    (int)$cpid = $comment->page_id;
+    $pid = Page::linkById($cpid);
 
 		$akismet = new Akismet(akismet_get_blog(), akismet_get_key());
 		$akismet->setCommentAuthor($comment->author_name);
