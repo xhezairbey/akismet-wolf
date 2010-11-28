@@ -41,23 +41,23 @@ Observer::observe('plugin_after_enable', 'akismet_admin_warning');
 * If True set comment is_spam and is_approved values.
 */
 function spamCheck(&$comment) {
-	if (is_null($comment)) return;
+  if (is_null($comment)) return;
 
-	(int)$cpid = $comment->page_id;
-	$pid = Page::linkById($cpid);
+  (int)$cpid = $comment->page_id;
+  $pid = Page::linkById($cpid);
 
-	$akismet = new Akismet(akismet_get_blog(), akismet_get_key());
-	$akismet->setCommentAuthor($comment->author_name);
-	$akismet->setCommentAuthorEmail($comment->author_email);
-	$akismet->setCommentAuthorURL($comment->author_link);
-	$akismet->setCommentContent($comment->body);
-	$akismet->setPermalink($pid);
+  $akismet = new Akismet(akismet_get_blog(), akismet_get_key());
+  $akismet->setCommentAuthor($comment->author_name);
+  $akismet->setCommentAuthorEmail($comment->author_email);
+  $akismet->setCommentAuthorURL($comment->author_link);
+  $akismet->setCommentContent($comment->body);
+  $akismet->setPermalink($pid);
 
-	if($akismet->isCommentSpam()) {
-		$comment->is_spam = 1; // flag the comment as spam
-		$comment->is_approved = 0; // remove from approved comments
-		$comment->save();
-	}
+  if($akismet->isCommentSpam()) {
+    $comment->is_spam = 1; // flag the comment as spam
+    $comment->is_approved = 0; // remove from approved comments
+    $comment->save();
+  }
 }
 
 /*
@@ -93,8 +93,8 @@ function akismet_get_blog() {
 }
 
 function akismet_stats_display() {
-	$url = "http://".akismet_get_key().".web.akismet.com/1.0/user-stats.php?blog=".akismet_get_blog()."";
-	?>
-	<iframe src="<?php echo $url; ?>" width="100%" height="900px" frameborder="0" id="akismet-stats-frame"></iframe>
-<?php
+  $url = "http://".akismet_get_key().".web.akismet.com/1.0/user-stats.php?blog=".akismet_get_blog()."";
+  ?>
+  <iframe src="<?php echo $url; ?>" width="100%" height="900px" frameborder="0" id="akismet-stats-frame"></iframe>
+  <?php
 }

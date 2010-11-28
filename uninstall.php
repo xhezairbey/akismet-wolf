@@ -10,6 +10,6 @@
 */
 
 if(Plugin::isEnabled('akismet')) {
-	Plugin::deleteAllSetings('akismet');
-	Flash::set('success', __('Plugin uninstalled sucessfully!'));
+  Plugin::deleteAllSetings('akismet');
+  Flash::set('success', __('Plugin uninstalled sucessfully!'));
 }
