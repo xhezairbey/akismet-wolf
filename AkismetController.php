@@ -25,21 +25,6 @@ class AkismetController extends PluginController {
   }
 
   /*
-  * Verify API Key.
-  * @return message on boolean value.
-  */
-  function verifyKey() {
-    $akismet = new Akismet(akismet_get_blog(), $settings['akismet_api_key']);
-    if($akismet->isKeyValid()) {
-      // api key is okay
-      echo "Valid Key!";
-    } else {
-      // api key is invalid
-      echo "Invalid Key!";
-    }
-  }
-
-  /*
   * Mark spam comment as ham.
   */
   function ham($id) {

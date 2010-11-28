@@ -61,6 +61,19 @@ function spamCheck(&$comment) {
 }
 
 /*
+* Verify API Key.
+* @return message on boolean value.
+*/
+function verifyKey() {
+  $akismet = new Akismet(akismet_get_blog(), akismet_get_key());
+  if($akismet->isKeyValid()) { ?>
+    <small style="color:#222;background-color:#0F3;padding:3px 6px;margin-left:10px;">This key is valid.</small>
+<?php } else { ?>
+    <small style="color:#222;background-color:#F20;padding:3px 6px;margin-left:10px;">This key is invalid!</small>
+<?php  }
+}
+
+/*
  * Returns the number of spam comments.
  * @return int Number of comments waiting for in spam queue.
 */

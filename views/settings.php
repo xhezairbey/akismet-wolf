@@ -17,7 +17,7 @@
         <tr>
           <td class="label"><label for="akismet_api_key"><?php echo __('Your Akismet Api Key'); ?>: </label></td>
           <td class="field">
-  				<input class="textinput" size="25" name="settings[akismet_api_key]" type="text" value="<?php echo $settings['akismet_api_key']; ?>" /></td>
+  				<input class="textinput" size="25" name="settings[akismet_api_key]" type="text" value="<?php echo $settings['akismet_api_key']; ?>" /> <?php echo verifyKey(); ?></td>
           <td class="help"><?php echo __('Your Akismet API Key. You can <a href="http://akismet.com/get/">get one</a> for free'); ?></td>
         </tr>
         <tr>
