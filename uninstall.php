@@ -2,7 +2,6 @@
 /*
  * The Akismet spam fighting plugin provides the option of blocking spam comments from appearing on your blog.
  *
- *
  * @author Arian Xhezairi <arian@xhezairi.com>
  * @version 0.2.0
  * @requires Wolf version 0.6.0

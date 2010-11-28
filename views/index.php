@@ -21,11 +21,9 @@ $stmt = $__CMS_CONN__->query($sql);
 $comments_count = $stmt->fetchColumn();
 $stmt->closeCursor();
 
-if (isset($page)) {
-    $CurPage = $page;
-} else {
-    $CurPage = 0;
-}
+if (isset($page)) $CurPage = $page; 
+else $CurPage = 0;
+
 $rowspage = Plugin::getSetting('commentsperpage', 'akismet');
 $start = $CurPage * $rowspage;
 

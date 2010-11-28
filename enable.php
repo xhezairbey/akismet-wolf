@@ -2,7 +2,6 @@
 /*
  * The Akismet spam fighting plugin provides the option of blocking spam comments from appearing on your blog.
  *
- *
  * @author Arian Xhezairi <arian@xhezairi.com>
  * @version 0.2.0
  * @requires Wolf version 0.6.0
@@ -22,17 +21,17 @@ if (preg_match('/^mysql/', DB_DSN)) {
 }
 
 if (!Plugin::isEnabled('comment')) {
-  Plugin::deactivate('akismet');
+  unset(self::$plugins[$plugin_id]);
   Flash::set('error', __('Comment Plugin must be enabled first!'));
 } else {
   // Check if the plugin's settings already exist and create them if not.
   if (Plugin::getSetting('akismet_api_key', 'akismet') === false) {
-	  //Store Akismet Settings into Database
-	  $settings = array('akismet_api_key' => 'your api key', 'akismet_blog_url' => URL_PUBLIC, 'commentsperpage' => 15);
+    //Store Akismet Settings into Database
+    $settings = array('akismet_api_key' => 'your api key', 'akismet_blog_url' => URL_PUBLIC, 'commentsperpage' => 15);
     $message = __('<strong>Akismet is almost ready.</strong> You must enter your Akismet API key for it to work.');
-	  Plugin::setAllSettings($settings, 'akismet');
-	  Flash::set('success', __($message));	
+    Plugin::setAllSettings($settings, 'akismet');
+    Flash::set('success', __($message));
   } else {
-	  Flash::set('success', __('Akismet Plugin Activated!'));
+    Flash::set('success', __('Akismet Plugin Activated!'));
   }
 }

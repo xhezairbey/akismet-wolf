@@ -10,14 +10,14 @@
 */
 ?>
 <p class="button"><a href="<?php echo get_url('plugin/akismet/'); ?>">
-  <img src="<?php echo AKISMET_ROOT;?>images/comment.png" align="middle" alt="page icon" /> <?php echo __('Spam Comments'); ?></a>
+  <img src="<?php echo AKISMET_ROOT; ?>images/comment.png" align="middle" alt="page icon" /> <?php echo __('Spam Comments'); ?></a>
 </p>
 <p class="button"><a href="<?php echo get_url('plugin/akismet/settings'); ?>">
-  <img src="<?php echo AKISMET_ROOT;?>images/settings.png" align="middle" alt="page icon" /> <?php echo __('Settings'); ?></a>
+  <img src="<?php echo AKISMET_ROOT; ?>images/settings.png" align="middle" alt="page icon" /> <?php echo __('Settings'); ?></a>
 </p>
 <p class="button"><a href="<?php echo get_url('plugin/akismet/stats/'); ?>">
-  <img src="<?php echo AKISMET_ROOT;?>images/activity.png" align="middle" alt="page icon" /> <?php echo __('Spam Statistics'); ?></a>
+  <img src="<?php echo AKISMET_ROOT; ?>images/activity.png" align="middle" alt="page icon" /> <?php echo __('Spam Statistics'); ?></a>
 </p>
 <p class="button"><a href="<?php echo get_url('plugin/akismet/documentation/'); ?>">
-  <img src="<?php echo AKISMET_ROOT;?>images/info.png" align="middle" alt="page icon" /> <?php echo __('Documentation'); ?></a>
+  <img src="<?php echo AKISMET_ROOT; ?>images/info.png" align="middle" alt="page icon" /> <?php echo __('Documentation'); ?></a>
 </p>
