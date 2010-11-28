@@ -49,130 +49,128 @@ class AkismetController extends PluginController {
     (int)$cpid = $comment->page_id;
     $pid = Page::linkById($cpid);
 
-		$akismet = new Akismet(akismet_get_blog(), akismet_get_key());
-		$akismet->setCommentAuthor($comment->author_name);
-		$akismet->setCommentAuthorEmail($comment->author_email);
-		$akismet->setCommentAuthorURL($comment->author_link);
-		$akismet->setCommentContent($comment->body);
-		$akismet->setPermalink($pid);
+    $akismet = new Akismet(akismet_get_blog(), akismet_get_key());
+    $akismet->setCommentAuthor($comment->author_name);
+    $akismet->setCommentAuthorEmail($comment->author_email);
+    $akismet->setCommentAuthorURL($comment->author_link);
+    $akismet->setCommentContent($comment->body);
+    $akismet->setPermalink($pid);
 
-		if($akismet->isCommentSpam()) {
-		  $comment->is_spam = 1; // flag the comment as spam
-		  $comment->is_approved = 0; // remove from approved comments
-		  $comment->save();
-		}
+    if($akismet->isCommentSpam()) {
+      $comment->is_spam = 1; // flag the comment as spam
+      $comment->is_approved = 0; // remove from approved comments
+      $comment->save();
+    }
   }
 
   /*
   * Mark spam comment as ham.
   */
   function ham($id) {
-		if ($comment = Record::findByIdFrom('Comment', $id)) {
+    if ($comment = Record::findByIdFrom('Comment', $id)) {
 
-		(int)$cpid = $comment->page_id;
-		$pid = Page::linkById($cpid);
+    (int)$cpid = $comment->page_id;
+    $pid = Page::linkById($cpid);
 
-		$akismet = new Akismet(akismet_get_blog(), akismet_get_key());
-		$akismet->setCommentAuthor($comment->author_name);
-		$akismet->setCommentAuthorEmail($comment->author_email);
-		$akismet->setCommentAuthorURL($comment->author_link);
-		$akismet->setCommentContent($comment->body);
-		$akismet->setUserIP($comment->ip);
-		$akismet->setPermalink($pid);
-		$akismet->submitHam();
+    $akismet = new Akismet(akismet_get_blog(), akismet_get_key());
+    $akismet->setCommentAuthor($comment->author_name);
+    $akismet->setCommentAuthorEmail($comment->author_email);
+    $akismet->setCommentAuthorURL($comment->author_link);
+    $akismet->setCommentContent($comment->body);
+    $akismet->setUserIP($comment->ip);
+    $akismet->setPermalink($pid);
+    $akismet->submitHam();
 
-			$comment->is_spam = 0;
-			$comment->is_approved = 1;
+      $comment->is_spam = 0;
+      $comment->is_approved = 1;
+      if ($comment->save()) Flash::set('success', __('Spam comment has been marked as ham!'));
 
-			if ($comment->save()) Flash::set('success', __('Spam comment has been marked as ham!'));
+    } else Flash::set('error', __('Spam comment not found!'));
 
-		} else Flash::set('error', __('Spam comment not found!'));
-		
-		redirect(get_url('plugin/akismet'));
-	}
+    redirect(get_url('plugin/akismet'));
+  }
 
   /*
   * Mark a regular comment as spam.
   */
-	function spam($id) {	
-		if ($comment = Record::findByIdFrom('Comment', $id)) {
+  function spam($id) {	
+    if ($comment = Record::findByIdFrom('Comment', $id)) {
 
-		(int)$cpid = $comment->page_id;
-		$pid = Page::linkById($cpid);
+    (int)$cpid = $comment->page_id;
+    $pid = Page::linkById($cpid);
 	
-		$akismet = new Akismet(akismet_get_blog(), akismet_get_key());
-		$akismet->setCommentAuthor($comment->author_name);
-		$akismet->setCommentAuthorEmail($comment->author_email);
-		$akismet->setCommentAuthorURL($comment->author_link);
-		$akismet->setCommentContent($comment->body);
-		$akismet->setUserIP($comment->ip);
-		$akismet->setPermalink($pid);
-		$akismet->submitSpam();
+    $akismet = new Akismet(akismet_get_blog(), akismet_get_key());
+    $akismet->setCommentAuthor($comment->author_name);
+    $akismet->setCommentAuthorEmail($comment->author_email);
+    $akismet->setCommentAuthorURL($comment->author_link);
+    $akismet->setCommentContent($comment->body);
+    $akismet->setUserIP($comment->ip);
+    $akismet->setPermalink($pid);
+    $akismet->submitSpam();
 
-			$comment->is_spam = 1;
-			$comment->is_approved = 0;
+      $comment->is_spam = 1;
+      $comment->is_approved = 0;
+      if ($comment->save()) Flash::set('success', __('Comment has been marked as spam!'));
 
-			if ($comment->save()) Flash::set('success', __('Comment has been marked as spam!'));
-			
-		} else Flash::set('error', __('Comment not found!'));
+    } else Flash::set('error', __('Comment not found!'));
 
-		redirect(get_url('plugin/comment/index'));
+    redirect(get_url('plugin/comment/index'));
   }
 
   /*
   * Delete spam comment.
   */
   function delete($id) {
-		if ($comment = Record::findByIdFrom('Comment', $id)) {
-		  if ($comment->delete()) {
-				Flash::set('success', __('Spam Comment has been deleted!'));
-				Observer::notify('spam_comment_deleted', $comment);
-		  }
-		  else {
-				Flash::set('error', __('Spam Comment has not been deleted!'));
-		  }
-		}	else Flash::set('error', __('Spam Comment not found!'));
-	
-		redirect(get_url('plugin/akismet'));
+    if ($comment = Record::findByIdFrom('Comment', $id)) {
+      if ($comment->delete()) {
+        Flash::set('success', __('Spam Comment has been deleted!'));
+        Observer::notify('spam_comment_deleted', $comment);
+      }
+      else {
+        Flash::set('error', __('Spam Comment has not been deleted!'));
+      }
+    }	else Flash::set('error', __('Spam Comment not found!'));
+		
+    redirect(get_url('plugin/akismet'));
   }
 
   function index($page = 0) {
-		$this->display('akismet/views/index', array(
-	  	'comments' => Comment::findAll(array('where' => 'is_spam=1')),
-	  	'page' => $page
-		));
+    $this->display('akismet/views/index', array(
+      'comments' => Comment::findAll(array('where' => 'is_spam=1')),
+      'page' => $page
+    ));
   }
 
   function documentation() {
-		$this->display('akismet/views/documentation');
+    $this->display('akismet/views/documentation');
   }
 	
   function stats() {
-		$this->display('akismet/views/stats');
+    $this->display('akismet/views/stats');
   }
 
   function settings() {
-		$this->display('akismet/views/settings', array('settings' => Plugin::getAllSettings('akismet')));
+    $this->display('akismet/views/settings', array('settings' => Plugin::getAllSettings('akismet')));
   }
 
   /*
   * Save Akismet settings.
   */
   function save() {
-		if (isset($_POST['settings'])) {
+    if (isset($_POST['settings'])) {
 
-	  $settings = $_POST['settings'];
-		  foreach ($settings as $key => $value) {
-			$settings[$key] = mysql_escape_string($value);
-	  }
+    $settings = $_POST['settings'];
+    foreach ($settings as $key => $value) {
+      $settings[$key] = mysql_escape_string($value);
+    }
 
-	  	$ret = Plugin::setAllSettings($settings, 'akismet');
-	  	if ($ret) Flash::set('success', __('The settings have been saved.'));
-	  	else Flash::set('error', 'An error occured trying to save the settings.');
-	
-	  } else Flash::set('error', 'Could not save settings, no settings found.');
-	
-		redirect(get_url('plugin/akismet/settings'));
+      $ret = Plugin::setAllSettings($settings, 'akismet');
+      if ($ret) Flash::set('success', __('The settings have been saved.'));
+      else Flash::set('error', 'An error occured trying to save the settings.');
+
+    } else Flash::set('error', 'Could not save settings, no settings found.');
+
+    redirect(get_url('plugin/akismet/settings'));
   }
 
 } //end AkismetController
