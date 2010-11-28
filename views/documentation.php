@@ -1,14 +1,13 @@
 <?php
-/**
+/*
  * The Akismet spam fighting plugin provides the option of blocking spam comments from appearing on your blog.
  *
- *
  * @author Arian Xhezairi <arian@xhezairi.com>
- * @version 0.1.0
+ * @version 0.2.0
  * @requires Wolf version 0.6.0
  * @license http://www.gnu.org/licenses/gpl.html GPLv3 License
  * @copyright Arian Xhezairi, 2010
-**/
+*/
 ?>
 <h3>Introduction</h3>
 <p>The Akismet Plugin for Wolf CMS is a way to integrate the popular Akismet anti-spam service in order to catch spam comments and stop them from showing in your site's pages.</p>
@@ -35,7 +34,6 @@
 <p></p>
 <h3>License</h3>
 <p>This plugin has been made available under the GNU GPL3 or later.</p>
-<p>Copyright (C) 2010 Arian Xhezairi &lt;arian@xhezairi.com&gt;</p>
+<p>Copyright (C) 2010 Arian Xhezairi &lt;arian@xhezairi.com&gt;/p>
 <p>Please read the full license statement at <a href="http://www.gnu.org/licenses/gpl.html">GNU GPL3 License</a> page.</p>
-<p>The Akismet Class used in this plugin to invoke all the Akismet Service API functionality, is a work <a href="http://www.achingbrain.net/">Alex Potsides</a> and his rights must be respected by all means.</p>
-<p>The icons used in the Sidebar of this plugin are a creation of WeFunction, as such are propriaty of their own authors. The icons are called WooFunction Icon Set. You can get a copy of them at <a href="http://www.woothemes.com/2009/09/woofunction/" title="Get the WooFunction Web Design Icon Set">http://www.woothemes.com/2009/09/woofunction/</a>.</p>
+<p><em><small>The Akismet Class used in this plugin to invoke all the Akismet Service API functionality is a work of <a href="http://www.achingbrain.net/">Alex Potsides</a>. The icons used in the Sidebar are a creation of <a href="http://www.woothemes.com/2009/09/woofunction/" title="Get the WooFunction Web Design Icon Set">WeFunction</a>, as such are propriaty of their own authors.</small></em></p>

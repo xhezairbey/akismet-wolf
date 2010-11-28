@@ -1,14 +1,13 @@
 <?php
-/**
+/*
  * The Akismet spam fighting plugin provides the option of blocking spam comments from appearing on your blog.
  *
- *
  * @author Arian Xhezairi <arian@xhezairi.com>
- * @version 0.1.0
+ * @version 0.2.0
  * @requires Wolf version 0.6.0
  * @license http://www.gnu.org/licenses/gpl.html GPLv3 License
  * @copyright Arian Xhezairi, 2010
-**/
+*/
 ?>
 <h1><?php echo __('Spam'); ?></h1>
 <div id="comments-def">
@@ -59,39 +58,40 @@ if($comments_count <= $rowspage) { $lastpage = 0; } else { $lastpage = abs($last
 <?php endif; ?>
 <br />
 <div class="pagination">
-<?php
-            if ($CurPage == $lastpage) {
-                $next = '<span class="disabled">Next Page</span>';
-            } else {
-                $nextpage = $CurPage + 1;
-                $next = '<a href="' . get_url('plugin/akismet/index/') . '' . $nextpage .
-                    '">Next Page</a>';
 
-            }
-            if ($CurPage == 0) {
-                $prev = '<span class="disabled">Previous Page</span>';
-            } else {
-                $prevpage = $CurPage - 1;
-                $prev = '<a href="' . get_url('plugin/akismet/index/') . '' . $prevpage .
-                    '">Previous Page</a>';
-            }
-            if ($CurPage != 0) {
-                echo "<a href=" . get_url('plugin/akismet/index/') . "0>First Page</a>\n ";
-            } else {
-                echo "<span class=\"disabled\">First Page</span>";
-            }
-            echo $prev;
-            for ($i = 0; $i <= $lastpage; $i++) {
-                if ($i == $CurPage)
-                    echo '<span class="current">' . $i . '</span';
-                else
-                    echo " <a href=" . get_url('plugin/akismet/index/') . "$i>$i</a>\n";
-            }
-            echo $next;
-            if ($CurPage != $lastpage) {
-                echo "\n<a href=" . get_url('plugin/akismet/index/') . "$lastpage>Last Page</a>&nbsp&nbsp;";
-            } else {
-                echo "<span class=\"disabled\">Last Page</span>";
-            }
+<?php
+
+if ($CurPage == $lastpage) {
+  $next = '<span class="disabled">Next Page</span>';
+} else {
+  $nextpage = $CurPage + 1;
+  $next = '<a href="' . get_url('plugin/akismet/index/') . '' . $nextpage . '">Next Page</a>';
+}
+
+if ($CurPage == 0) {
+  $prev = '<span class="disabled">Previous Page</span>';
+} else {
+  $prevpage = $CurPage - 1;
+  $prev = '<a href="' . get_url('plugin/akismet/index/') . '' . $prevpage . '">Previous Page</a>';
+}
+
+if ($CurPage != 0) {
+  echo "<a href=" . get_url('plugin/akismet/index/') . "0>First Page</a>\n ";
+} else {
+  echo "<span class=\"disabled\">First Page</span>";
+}
+  echo $prev;
+    for ($i = 0; $i <= $lastpage; $i++) {
+      if ($i == $CurPage)
+        echo '<span class="current">' . $i . '</span';
+      else
+        echo " <a href=" . get_url('plugin/akismet/index/') . "$i>$i</a>\n";
+      }
+        echo $next;
+          if ($CurPage != $lastpage) {
+            echo "\n<a href=" . get_url('plugin/akismet/index/') . "$lastpage>Last Page</a>&nbsp&nbsp;";
+          } else {
+            echo "<span class=\"disabled\">Last Page</span>";
+          }
 ?>
 </div>
