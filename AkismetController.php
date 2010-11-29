@@ -132,6 +132,22 @@ class AkismetController extends PluginController {
     redirect(get_url('plugin/akismet'));
   }
 
+  /*
+  * Empty spam queue. Delete all spam comments from database.
+  */
+  function purge() {
+    $pdo   = Record::getConnection();
+    $table = TABLE_PREFIX . "comment";
+    $is_spam = $pdo->exec("SELECT FROM $table WHERE `is_spam` = 1");
+		if(!empty($is_spam)) {
+      $pdo->exec("DELETE FROM $table WHERE `is_spam` = 1");
+      Flash::set('success', __('All Spam Comments successfully deleted!'));
+		} else {
+      Flash::set('success', __('There\'s nothing to be deleted!'));
+    }
+    redirect(get_url('plugin/akismet'));
+  }
+
   function index($page = 0) {
     $this->display('akismet/views/index', array(
       'comments' => Comment::findAll(array('where' => 'is_spam=1')),

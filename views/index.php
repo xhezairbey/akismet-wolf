@@ -10,6 +10,8 @@
 */
 ?>
 <h1><?php echo __('Spam'); ?></h1>
+<div style="padding:3px 10px;white-space:nowrap;-webkit-border-radius:6px;text-shadow:#fff 0px 1px 0;background-color:#f2f2f2;float:right;margin:5px 2px;border:1px solid #ccc;"><a href="<?php echo get_url('plugin/akismet/purge/'); ?>">Empty Spam Queue</a></div>
+<br />
 <div id="comments-def">
     <div class="comment"><?php echo __('Comments'); ?></div>
     <div class="modify"><?php echo __('Actions'); ?></div>
