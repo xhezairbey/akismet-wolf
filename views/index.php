@@ -52,7 +52,7 @@ if($comments_count <= $rowspage) { $lastpage = 0; } else { $lastpage = abs($last
 <?php endwhile; ?>
 </ol>
 <?php else: ?>
-<h6><?php echo __('You must be very lucky, no spam comments found at this time.'); ?></h6>
+<h6><strong><?php echo __('You must be very lucky, no spam comments found at this time.'); ?></strong></h6>
 <?php endif; ?>
 <br />
 <div class="pagination">

@@ -26,52 +26,16 @@ Plugin::setInfos(array(
 define('AKISMET_ROOT', URI_PUBLIC.'wolf/plugins/akismet/');
 
 // Load the Akismet class into the system.
-AutoLoader::addFile('Akismet', CORE_ROOT.'/plugins/akismet/lib/Akismet.php');
+AutoLoader::addFile('Akismet', PLUGINS_ROOT.'/akismet/lib/Akismet.php');
+AutoLoader::addFile('AkismetController', PLUGINS_ROOT.'/akismet/AkismetController.php');
 
 // Add the Akismet Tab.
 Plugin::addController('akismet', 'Akismet', 'administrator', true);
 
 // Observe Events
-Observer::observe('comment_after_add', 'spamCheck');
+Observer::observe('comment_after_add', 'AkismetController::spamCheck');
 Observer::observe('view_backend_list_plugin', 'spam_comment_display_count');
 Observer::observe('plugin_after_enable', 'akismet_admin_warning');
-
-/*
-* Check if submitted comment is spam.
-* If True set comment is_spam and is_approved values.
-*/
-function spamCheck(&$comment) {
-  if (is_null($comment)) return;
-
-  (int)$cpid = $comment->page_id;
-  $pid = Page::linkById($cpid);
-
-  $akismet = new Akismet(akismet_get_blog(), akismet_get_key());
-  $akismet->setCommentAuthor($comment->author_name);
-  $akismet->setCommentAuthorEmail($comment->author_email);
-  $akismet->setCommentAuthorURL($comment->author_link);
-  $akismet->setCommentContent($comment->body);
-  $akismet->setPermalink($pid);
-
-  if($akismet->isCommentSpam()) {
-    $comment->is_spam = 1; // flag the comment as spam
-    $comment->is_approved = 0; // remove from approved comments
-    $comment->save();
-  }
-}
-
-/*
-* Verify API Key.
-* @return message on boolean value.
-*/
-function verifyKey() {
-  $akismet = new Akismet(akismet_get_blog(), akismet_get_key());
-  if($akismet->isKeyValid()) { ?>
-    <small style="color:#222;background-color:#0F3;padding:3px 6px;margin-left:10px;">This key is valid.</small>
-<?php } else { ?>
-    <small style="color:#222;background-color:#F20;padding:3px 6px;margin-left:10px;">This key is invalid!</small>
-<?php  }
-}
 
 /*
  * Returns the number of spam comments.
