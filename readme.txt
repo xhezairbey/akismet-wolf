@@ -1,6 +1,16 @@
 == CHANGELOG ==
 
-* 0.1.0 - Initial Public Release
+* 0.2.0 Release - * * 2010
+
++ Added two new methods, verifyKey() for API key validation and purge() for emptying all the spam in the queue.
++ Added API Key validation notificator with color and text in Settings page.
++ Added Empty Spam Queue button in spam listing page (main page).
++ Added an extra functionality additional documentation page.
++ Added documentation comments for some functions.
+- Fixed Typos through in and out all plugin files.
+. Moved spamCheck, verifyKey and purge methods over to AkismetController.php for more MVC adherance.
+
+* 0.1.0 - Initial Public Release - 19 Sep. 2010
 
 == WHAT IT IS ==
 
@@ -15,7 +25,7 @@ This akismet plugin provides the following features:
 
 == HOW TO USE IT ==
 
-* Using this plugin requires you to have enabled Wolf CMS Comment Plugin.
+* Using this plugin requires you to first enabled Wolf CMS Comment Plugin.
 * Enable Akismet Plugin from SETTINGS page in Wolf CMS Administration Panel
 * Go to Akismet Plugin Settings and provide an API Key in the respective field.
 * Fill in your desired blog/site URL in the respective field. Don't forget to include a trailing slash at the end of it.
@@ -24,7 +34,7 @@ This akismet plugin provides the following features:
 == EXTRA FUNCTIONALITY ==
 
 * To enable an additional function that is bundled in the Akismet Plugin
-please check the official public release page for further instructions, at http://wp.xhezairi.com/akismet-wolf.html
+please check the official public release page for further instructions, at http://www.xhezairi.com/code/akismet-wolf.html
 
 == LICENSE ==
 
