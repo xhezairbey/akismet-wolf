@@ -10,12 +10,12 @@
 */
 ?>
 <h1><?php echo __('Spam'); ?></h1>
-<div style="padding:3px 10px;white-space:nowrap;-webkit-border-radius:6px;text-shadow:#fff 0px 1px 0;background-color:#f2f2f2;float:right;margin:5px 2px;border:1px solid #ccc;"><a href="<?php echo get_url('plugin/akismet/purge/'); ?>">Empty Spam Queue</a></div>
+<div class="purge-button"><a href="<?php echo get_url('plugin/akismet/purge/'); ?>">Empty Spam Queue</a></div>
 <br />
-<div id="comments-def">
+<!--<div id="comments-def">
     <div class="comment"><?php echo __('Comments'); ?></div>
     <div class="modify"><?php echo __('Actions'); ?></div>
-</div>
+</div>-->
 <?php
 global $__CMS_CONN__;
 $sql = "SELECT COUNT(*) FROM ".TABLE_PREFIX."comment WHERE is_spam = 1";
@@ -30,7 +30,7 @@ $rowspage = Plugin::getSetting('commentsperpage', 'akismet');
 $start = $CurPage * $rowspage;
 
 $totalrecords = $comments_count;
-$sql = "SELECT comment.is_spam, comment.id, comment.page_id, comment.author_name, comment.body, comment.created_on, page.title FROM " . TABLE_PREFIX . "comment AS comment, " . TABLE_PREFIX .
+$sql = "SELECT comment.is_spam, comment.id, comment.page_id, comment.author_name, comment.author_email, comment.author_link, comment.body, comment.created_on, page.title FROM " . TABLE_PREFIX . "comment AS comment, " . TABLE_PREFIX .
     "page AS page WHERE comment.is_spam = 1 AND comment.page_id = page.id LIMIT " . $start . "," . $rowspage;
 
 $stmt = $__CMS_CONN__->prepare($sql);
@@ -39,24 +39,36 @@ $lastpage = ceil($totalrecords / $rowspage);
 if($comments_count <= $rowspage) { $lastpage = 0; } else { $lastpage = abs($lastpage - 1); }
 ?>
 <?php if ($comments_count > 0): ?>
-<ol id="comments">
-
-<?php while ($comment = $stmt->fetchObject()): ?>
-    <li class="<?php echo odd_even(); ?> spam">
-          <strong><a href="<?php echo get_url('plugin/akismet/edit/' . $comment->id); ?>"><?php echo $comment->author_name.' '.__('about').' "'.$comment->title.'"'; ?></a></strong>
-          <p><?php echo $comment->body; ?></p>
-          <div class="infos">
-              <?php echo date('D, j M Y', strtotime($comment->created_on)); ?> &#8212; 
-              <a href="<?php echo get_url('plugin/akismet/ham/' . $comment->id); ?>"><?php echo __('Ham (Approve)'); ?></a> | 
-              <a href="<?php echo get_url('plugin/akismet/delete/' . $comment->id); ?>" onclick="return confirm('<?php echo __('Are you sure you wish to delete it?'); ?>');"><?php echo __('Delete'); ?></a>
-          </div>
-      </li>
-<?php endwhile; ?>
-</ol>
+<table class="allspam">
+	<thead id="comment-table-header">
+    <tr>
+      <th scope="col" id="checkbox" class="column-cb check-column"><input type="checkbox"></th>
+      <th scope="col" id="comment-author" class="column-author">Author</th>
+      <th scope="col" id="comment-body" class="column-body">Comment</th>
+      <th scope="col" id="comment-post" class="column-post">In Post</th>
+    </tr>
+  </thead>
+	<tbody id="the-comment-list" class="the-comment-list">
+	<?php while ($comment = $stmt->fetchObject()): ?>
+    <tr class="<?php echo odd_even(); ?> spam">
+      <th scope="row" class="check-column"><input type="checkbox" name="delete_comments[]" value="<?php echo $comment->id; ?>"></th>
+      <td class="comment-author"><strong><?php echo $comment->author_name; ?></strong> (<?php echo $comment->author_email; ?>)<br /><?php echo $comment->author_link; ?></td>
+      <td class="comment-body"><em><?php echo date('D, j M Y', strtotime($comment->created_on)); ?></em><br /><?php echo $comment->body; ?></td>
+      <td class="comment-post"><?php echo Page::linkById(6); ?></td>
+    </tr>
+	<?php endwhile; ?>
+</tbody>
+</table>
 <?php else: ?>
 <h6><strong><?php echo __('You must be very lucky, no spam comments found at this time.'); ?></strong></h6>
 <?php endif; ?>
 <br />
+          <div class="infos">
+
+              <a href="<?php echo get_url('plugin/akismet/ham/' . $comment->id); ?>"><?php echo __('Ham (Approve)'); ?></a> | 
+              <a href="<?php echo get_url('plugin/akismet/delete/' . $comment->id); ?>" onclick="return confirm('<?php echo __('Are you sure you wish to delete it?'); ?>');"><?php echo __('Delete'); ?></a>
+          </div>
+
 <div class="pagination">
 
 <?php

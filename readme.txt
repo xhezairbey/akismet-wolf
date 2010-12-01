@@ -1,6 +1,6 @@
 == CHANGELOG ==
 
-* 0.2.0 Release - 01 Dec. 2010
+* 0.2.0 Release - * * 2010
 
 + Added two new methods, verifyKey() for API key validation and purge() for emptying all the spam in the queue.
 + Added API Key validation notificator with color and text in Settings page.

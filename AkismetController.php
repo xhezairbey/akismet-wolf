@@ -67,17 +67,17 @@ class AkismetController extends PluginController {
   function ham($id) {
     if ($comment = Record::findByIdFrom('Comment', $id)) {
 
-    (int)$cpid = $comment->page_id;
-    $pid = Page::linkById($cpid);
+      (int)$cpid = $comment->page_id;
+      $pid = Page::linkById($cpid);
 
-    $akismet = new Akismet(akismet_get_blog(), akismet_get_key());
-    $akismet->setCommentAuthor($comment->author_name);
-    $akismet->setCommentAuthorEmail($comment->author_email);
-    $akismet->setCommentAuthorURL($comment->author_link);
-    $akismet->setCommentContent($comment->body);
-    $akismet->setUserIP($comment->ip);
-    $akismet->setPermalink($pid);
-    $akismet->submitHam();
+      $akismet = new Akismet(akismet_get_blog(), akismet_get_key());
+      $akismet->setCommentAuthor($comment->author_name);
+      $akismet->setCommentAuthorEmail($comment->author_email);
+      $akismet->setCommentAuthorURL($comment->author_link);
+      $akismet->setCommentContent($comment->body);
+      $akismet->setUserIP($comment->ip);
+      $akismet->setPermalink($pid);
+      $akismet->submitHam();
 
       $comment->is_spam = 0;
       $comment->is_approved = 1;
@@ -93,18 +93,17 @@ class AkismetController extends PluginController {
   */
   function spam($id) {	
     if ($comment = Record::findByIdFrom('Comment', $id)) {
+      (int)$cpid = $comment->page_id;
+      $pid = Page::linkById($cpid);
 
-    (int)$cpid = $comment->page_id;
-    $pid = Page::linkById($cpid);
-	
-    $akismet = new Akismet(akismet_get_blog(), akismet_get_key());
-    $akismet->setCommentAuthor($comment->author_name);
-    $akismet->setCommentAuthorEmail($comment->author_email);
-    $akismet->setCommentAuthorURL($comment->author_link);
-    $akismet->setCommentContent($comment->body);
-    $akismet->setUserIP($comment->ip);
-    $akismet->setPermalink($pid);
-    $akismet->submitSpam();
+      $akismet = new Akismet(akismet_get_blog(), akismet_get_key());
+      $akismet->setCommentAuthor($comment->author_name);
+      $akismet->setCommentAuthorEmail($comment->author_email);
+      $akismet->setCommentAuthorURL($comment->author_link);
+      $akismet->setCommentContent($comment->body);
+      $akismet->setUserIP($comment->ip);
+      $akismet->setPermalink($pid);
+      $akismet->submitSpam();
 
       $comment->is_spam = 1;
       $comment->is_approved = 0;
@@ -123,10 +122,7 @@ class AkismetController extends PluginController {
       if ($comment->delete()) {
         Flash::set('success', __('Spam Comment has been deleted!'));
         Observer::notify('spam_comment_deleted', $comment);
-      }
-      else {
-        Flash::set('error', __('Spam Comment has not been deleted!'));
-      }
+      } else Flash::set('error', __('Spam Comment has not been deleted!'));
     }	else Flash::set('error', __('Spam Comment not found!'));
 		
     redirect(get_url('plugin/akismet'));
@@ -139,10 +135,10 @@ class AkismetController extends PluginController {
     $pdo   = Record::getConnection();
     $table = TABLE_PREFIX . "comment";
     $is_spam = $pdo->exec("SELECT FROM $table WHERE `is_spam` = 1");
-		if(!empty($is_spam)) {
+    if(!empty($is_spam)) {
       $pdo->exec("DELETE FROM $table WHERE `is_spam` = 1");
       Flash::set('success', __('All Spam Comments successfully deleted!'));
-		} else {
+    } else {
       Flash::set('success', __('There\'s nothing to be deleted!'));
     }
     redirect(get_url('plugin/akismet'));
@@ -172,12 +168,10 @@ class AkismetController extends PluginController {
   */
   function save() {
     if (isset($_POST['settings'])) {
-
-    $settings = $_POST['settings'];
-    foreach ($settings as $key => $value) {
-      $settings[$key] = mysql_escape_string($value);
-    }
-
+      $settings = $_POST['settings'];
+      foreach ($settings as $key => $value) {
+        $settings[$key] = mysql_escape_string($value);
+      }
       $ret = Plugin::setAllSettings($settings, 'akismet');
       if ($ret) Flash::set('success', __('The settings have been saved.'));
       else Flash::set('error', 'An error occured trying to save the settings.');
